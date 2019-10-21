@@ -1,0 +1,6 @@
+version: '2'
+plugins:
+  kibit:
+    enabled: true
+  fixme:
+    enabled: true
