@@ -89,3 +89,12 @@ acquire the lock. It can also be configured to never acquire it:
 # Roadmap
 
 - [ ] support 2 arg version of the lock API
+
+
+# Authors
+
+<sup>In alphabetical order</sup>
+
+- [Afonso Tsukamoto](https://github.com/AfonsoTsukamoto)
+- [Łukasz Korecki](https://github.com/lukaszkorecki)
+- [Marketa Adamova](https://github.com/MarketaAdamova)
