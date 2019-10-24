@@ -6,7 +6,7 @@
             :year 2018
             :key "mit"}
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [nomnom/utility-belt.sql "0.2.2"]
+                 [nomnom/utility-belt.sql "0.2.2-SNAPSHOT"]
                  [com.stuartsierra/component "0.4.0"]]
   :plugins [[lein-cloverage "1.0.13" :exclusions [org.clojure/clojure]]]
   :profiles {:dev
