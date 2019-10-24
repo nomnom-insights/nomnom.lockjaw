@@ -1,5 +1,10 @@
 # lockjaw
 
+
+[![Clojars Project](https://img.shields.io/clojars/v/nomnom/lockjaw.svg)](https://clojars.org/nomnom/lockjaw)
+
+[![CircleCI](https://circleci.com/gh/nomnom-insights/nomnom.lockjaw.svg?style=svg)](https://circleci.com/gh/nomnom-insights/nomnom.lockjaw)
+
 <img src="https://vignette.wikia.nocookie.net/marveldatabase/images/5/51/Lockjaw_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/670?cb=20171122020841" align="right" height=210 />
 
 Locks, backed by Postgres and Component
