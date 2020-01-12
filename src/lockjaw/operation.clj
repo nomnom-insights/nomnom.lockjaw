@@ -1,5 +1,5 @@
 (ns lockjaw.operation
-  (:require [clojure.java.jdbc :as jdbc]))
+  (:require [next.jdbc :as jdbc]))
 
 (def acquire-lock-query "SELECT pg_try_advisory_lock(?)")
 (def release-lock-query "SELECT pg_advisory_unlock(?)")
@@ -25,8 +25,7 @@
   (update reg key #(dec (or % 0))))
 
 (defn acquire-lock [db-conn lock-id]
-  (let [res (-> (jdbc/query db-conn [acquire-lock-query lock-id])
-                first
+  (let [res (-> (jdbc/execute-one! db-conn [acquire-lock-query lock-id])
                 :pg_try_advisory_lock
                 true?)]
     (when res
@@ -34,8 +33,7 @@
     res))
 
 (defn release-lock [db-conn lock-id]
-  (let [res (-> (jdbc/query db-conn [release-lock-query lock-id])
-                first
+  (let [res (-> (jdbc/execute-one! db-conn [release-lock-query lock-id])
                 :pg_advisory_unlock
                 true?)]
     (when res
@@ -45,8 +43,8 @@
 (defn release-all-locks!
   "Releases all locks hold by this connection, regardless of how many were acquired"
   [db-conn]
-  (jdbc/query db-conn release-all-locks-query)
+  (jdbc/execute-one! db-conn [release-all-locks-query])
   (reset! registry {}))
 
 (defn all-locks [db-conn]
-  (jdbc/query db-conn find-all-locks))
+  (jdbc/execute! db-conn [find-all-locks]))
