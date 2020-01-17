@@ -32,14 +32,14 @@
     (is (= 4
            (get @operation/registry 27)))
     (is (= [27]
-           (map :objid (operation/all-locks (:db-conn @system)))))
+           (map :pg_locks/objid (operation/all-locks (:db-conn @system)))))
     (operation/release-lock (:db-conn @system) 27)
     (is (= 3
            (get @operation/registry 27)))
     (is (= [27]
-           (map :objid (operation/all-locks (:db-conn @system)))))
+           (map :pg_locks/objid (operation/all-locks (:db-conn @system)))))
     (operation/release-all-locks! (:db-conn @system))
     (is (= nil
            (get @operation/registry 27)))
     (is (= []
-           (map :objid (operation/all-locks (:db-conn @system)))))))
+           (map :pg_locks/objid (operation/all-locks (:db-conn @system)))))))

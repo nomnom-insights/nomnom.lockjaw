@@ -91,6 +91,11 @@ acquire the lock. It can also be configured to never acquire it:
   (.stop never-lock))
 ```
 
+# Change log
+
+- *unreleased* - 0.2.0-SNAPSHOT, switche to `next.jdbc`
+- 2019-10-24 - 0.1.2, Initial public offering
+
 # Roadmap
 
 - [ ] support 2 arg version of the lock API
