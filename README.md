@@ -11,10 +11,14 @@ Locks, backed by Postgres and Component
 
 ## Intro
 
-This is a simple component which uses [Postgres' advisory locks](https://www.postgresql.org/docs/9.6/functions-admin.html#FUNCTIONS-ADVISORY-LOCKS) which are mostly managed by Postgrs itself and are really lightweight.
+Lockjaw is a simple [Component](https://github.com/stuartsierra/component) which uses [Postgres' advisory locks](https://www.postgresql.org/docs/9.6/functions-admin.html#FUNCTIONS-ADVISORY-LOCKS) which are managed by Postgrs itself and are really lightweight.
 They are not meant to be used for row level locking, but for implementing concurrency control primitives in applications.
 
-Our intended usage is to ensure that at any given time, only one instance of *something* is doing the work, usually it's for ensuring that only one scheduler at a time is queueing up jobs for periodical processing. See [how it integrates with Eternity](https://github.com/nomnom-insights/nomnom.eternity#with-lock-eternitymiddlewarewith-lock)
+Intended usage is to ensure that at any given time, only one instance of *something* is doing the work, usually it's for ensuring that only one scheduler at a time is queueing up jobs for periodical processing. See [how it integrates with Eternity](https://github.com/nomnom-insights/nomnom.eternity#with-lock-eternitymiddlewarewith-lock)
+
+### Locking advice
+
+Ideally, you do not do much work while holding the lock. E.g. ensuring that you have push only 1 job to a queue or call and endpoint once. Relying on performing long running tasks while holding the lock is not advised. Use it as a coordination mechanism, not the business logic.
 
 ## How to use it?
 
@@ -26,17 +30,17 @@ The api is very simple:
 Internally we use a lock ID which is an integer. The lock is established **per connection** (session), meaning the following is true:
 
 - if the current connection holds the lock for given ID, acquiring it again will still hold the lock and return true
-- if the current connection doesn't hold the lock for given ID, acquiring it again will return false, *unless the lock was release in the meantime*
-- if the connection is stopped, in a clean way (system/component stop) or jvm process exists (crash, or restart) - **the lock is released**
+- if the current connection doesn't hold the lock for given ID, attempting to acquire it  will return false, *unless the lock was released in the meantime*
+- if the connection is stopped, in a clean way (system/component stop) or jvm process exits (crash, or restart) - **the lock is released**
 
-It's important that you use the right connection type, when using tools like pgBouncer, as they might mess with the advisory locks and when they are (not) acquired. [See here for more details](https://electron0zero.xyz/blog/til-connection-pooling-and-pgbouncer).
+It's important that you use the right connection type, especially when using tools like pgBouncer, as they might mess with the advisory locks and when they are (not) acquired. [See here for more details](https://electron0zero.xyz/blog/til-connection-pooling-and-pgbouncer).
 
 ### Lock IDs
 
-Internally lock ids are just integers, and Lockjaw it easier to create them - we create an id out of a provided `name`.
+On Postgres level lock ids are just integers, and Lockjaw makes it easier to create them - we create an id out of a provided `name` configuration option.
 We use the CRC algorithm for ensuring that given string always produces same integer. Inspired by [Zencoder's Locker library](https://github.com/zencoder/locker/blob/master/lib/locker/advisory.rb#L97-L101).
 
-Note that we only support simple way of locking - by single a ID, it's possible to have to use Postgres locks with a pair of IDs, but it's not supported by Lockjaw (so far).
+Note that we only support simple way of locking - by single a ID. Postgres also offers a way of locking with two (numerical) IDs, but it's not supported by Lockjaw (at the moment).
 
 
 ## Usage
@@ -51,7 +55,7 @@ Note that we only support simple way of locking - by single a ID, it's possible 
 (def a-lock
   (.start
    (component/using
-   ;; unique id, per service, in 99% of the cases service name is ok
+    ;; unique id, per service, in 99% of the cases service name is ok
     (lockjaw.core/create {:name "some-service" })
     [:db-conn]))) ;; assumes a hikari-cp pool is here
 
@@ -93,7 +97,7 @@ acquire the lock. It can also be configured to never acquire it:
 
 # Change log
 
-- *unreleased* - 0.2.0-SNAPSHOT, switche to `next.jdbc`
+- *unreleased* - 0.2.0-SNAPSHOT, switches to `next.jdbc`
 - 2019-10-24 - 0.1.2, Initial public offering
 
 # Roadmap
