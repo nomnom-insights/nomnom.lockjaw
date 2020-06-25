@@ -18,7 +18,7 @@ Intended usage is to ensure that at any given time, only one instance of *someth
 
 ### Locking advice
 
-Ideally, you do not do much work while holding the lock. E.g. ensuring that you have push only 1 job to a queue or call and endpoint once. Relying on performing long running tasks while holding the lock is not advised. Use it as a coordination mechanism, not the business logic.
+Ideally, you do not do much work while holding the lock. E.g. ensuring that your application pushed only 1 job to a queue or call an endpoint once. Relying on performing long running tasks while holding the lock is not advised. Use it as a coordination mechanism, not the business logic.
 
 ## How to use it?
 
