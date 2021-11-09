@@ -30,7 +30,13 @@
   (testing "lock-1 gets a lock, lock-2 doesnt"
     (is (lock/acquire! (:lock-1 @sys)))
     (is (false? (lock/acquire! (:lock-2 @sys))))
-    (is (lock/release! (:lock-1 @sys)))))
+    (is (lock/release! (:lock-1 @sys))))
+
+  (testing "gets and releases locks by name"
+    (is (lock/acquire-by-name! (:lock-1 @sys) "foo"))
+    (is (false? (lock/acquire-by-name! (:lock-2 @sys) "foo")))
+    (is (lock/release-by-name! (:lock-1 @sys) "foo"))
+    (is (nil? (lock/release-by-name! (:lock-2 @sys "foo"))))))
 
 (deftest a-handy-macro
   (testing "nice macro ensures lock clean up"

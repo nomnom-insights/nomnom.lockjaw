@@ -95,8 +95,17 @@ acquire the lock. It can also be configured to never acquire it:
   (.stop never-lock))
 ```
 
+# Testing
+
+Just run:
+
+`lein test`
+
+> Ensure no other database connections are currently holding advisory locks when running tests.
+
 # Change log
 
+- 2021-11-09 - updates dependencies, includes `next.jdbc`, allows passing lock-name when asking for lock.
 - *unreleased* - 0.2.0-SNAPSHOT, switches to `next.jdbc`
 - 2019-10-24 - 0.1.2, Initial public offering
 
