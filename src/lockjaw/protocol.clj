@@ -30,3 +30,23 @@
        :lockjaw.operation/no-lock)
      (finally
        (release! ~a-lock))))
+
+(defmacro with-named-lock
+  "Run the code if a lock with the passed name is obtained"
+  [a-lock lock-name & body]
+  `(if (acquire-by-name! ~a-lock ~lock-name)
+     (do
+       ~@body)
+     :lockjaw.operation/no-lock))
+
+(defmacro with-named-lock!
+  "Like *with-lock* but release it after use"
+  [a-lock lock-name & body]
+  `(try
+     (if (acquire-by-name! ~a-lock ~lock-name)
+       (do
+         ~@body)
+       :lockjaw.operation/no-lock)
+     (finally
+       (release-by-name! ~a-lock ~lock-name))))
+
