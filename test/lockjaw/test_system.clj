@@ -5,12 +5,12 @@
 (def db-spec
   {:pool-name  "test"
    :adapter "postgresql"
-   :username (or (System/getenv "PG_USER") "nomnom")
-   :password (or (System/getenv "PG_PASSWORD") "password")
-   :server-name  (or (System/getenv "PG_HOST") "127.0.0.1")
-   :port-number "5432"
+   :username (or (System/getenv "POSTGRES_USER") "nomnom")
+   :password (or (System/getenv "POSTGRES_PASSWORD") "password")
+   :server-name  (or (System/getenv "POSTGRES_HOST") "127.0.0.1")
+   :port-number (or (System/getenv "POSTGRES_HOST") "5432")
    :maximum-pool-size 2
-   :database-name (or (System/getenv "PG_DB") "nomnom_test")})
+   :database-name (or (System/getenv "POSTGRES_DB") "nomnom_test")})
 
 (defn create [extra]
   (component/map->SystemMap
