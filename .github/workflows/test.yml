@@ -7,14 +7,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "postgres:latest"
+          - "postgres:13"
     runs-on: ubuntu-latest
     container:
       image: clojure:openjdk-11-lein-2.9.6
     services:
       postgres:
-        image: postgres:13.0
+        image: ${{ matrix.version }}
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: password
@@ -42,7 +47,7 @@ jobs:
     - name: Install dependencies
       run: lein deps
 
-    - name: Run tests
+    - name: Run lockjaw tests for ${{ matrix.version }}
       id: tests
       run: lein test 2>&1
 

@@ -8,7 +8,7 @@
    :username (or (System/getenv "POSTGRES_USER") "nomnom")
    :password (or (System/getenv "POSTGRES_PASSWORD") "password")
    :server-name  (or (System/getenv "POSTGRES_HOST") "127.0.0.1")
-   :port-number (or (System/getenv "POSTGRES_HOST") "5432")
+   :port-number (Integer/parseInt (or (System/getenv "POSTGRES_PORT") "5432"))
    :maximum-pool-size 2
    :database-name (or (System/getenv "POSTGRES_DB") "nomnom_test")})
 
