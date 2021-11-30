@@ -1,4 +1,4 @@
-(defproject nomnom/lockjaw "0.2.1-SNAPSHOT-1"
+(defproject nomnom/lockjaw "0.2.1"
   :description "Postgres Advisory Locks as a Component"
   :url "https://github.com/nomnom-insights/nomnom.lockjaw"
   :license {:name "MIT License"
