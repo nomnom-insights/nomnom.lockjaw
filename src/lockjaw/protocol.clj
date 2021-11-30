@@ -9,7 +9,7 @@
 
   (release!
     [this]
-    "Rleases the lock"))
+    "Releases the lock"))
 
 
 (defmacro with-lock
