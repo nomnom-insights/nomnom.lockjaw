@@ -1,4 +1,4 @@
-(defproject nomnom/lockjaw "0.2.0-SNAPSHOT"
+(defproject nomnom/lockjaw "0.2.1"
   :description "Postgres Advisory Locks as a Component"
   :url "https://github.com/nomnom-insights/nomnom.lockjaw"
   :license {:name "MIT License"
@@ -9,14 +9,13 @@
                                    :username :env/clojars_username
                                    :password :env/clojars_password}}
 
-  :dependencies [[org.clojure/clojure "1.10.1"]
-                 [seancorfield/next.jdbc "1.0.13"]
-                 [com.stuartsierra/component "0.4.0"]]
-  :plugins [[lein-cloverage "1.0.13" :exclusions [org.clojure/clojure]]]
+  :dependencies [[org.clojure/clojure "1.10.3"]
+                 [seancorfield/next.jdbc "1.2.659"]
+                 [com.stuartsierra/component "1.0.0"]]
   :profiles {:dev
              {:resource-paths ["dev-resources"]
-              :dependencies [[ch.qos.logback/logback-classic "1.2.3"]
+              :dependencies [[ch.qos.logback/logback-classic "1.2.7"]
                              ;; pulls in all the PG bits and a connection pool
                              ;; component
-                             [nomnom/utility-belt.sql "1.0.0-SNAPSHOT"]
-                             [org.clojure/tools.logging "0.5.0"]]}})
+                             [nomnom/utility-belt.sql "1.0.1"]
+                             [org.clojure/tools.logging "1.1.0"]]}})

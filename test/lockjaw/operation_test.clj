@@ -1,15 +1,18 @@
 (ns lockjaw.operation-test
-  (:require [clojure.test :refer :all]
-            [utility-belt.sql.component.connection-pool :as cp]
-            [lockjaw.test-system :as test-system]
-            [lockjaw.operation :as operation]))
+  (:require
+    [clojure.test :refer [deftest is testing use-fixtures]]
+    [lockjaw.operation :as operation]
+    [lockjaw.test-system :as test-system]))
+
 
 (def system (atom nil))
+
 
 (use-fixtures :each (fn [test-fn]
                       (test-system/start! system {})
                       (test-fn)
                       (test-system/stop! system)))
+
 
 (deftest lock-operations
   (testing "one conn acquires lock, other doesnt"
@@ -22,6 +25,7 @@
   (testing "releases lock, nobody hs it"
     (is (operation/release-lock (:db-conn @system) 13))
     (is (nil? (seq (operation/all-locks (:db-conn @system)))))))
+
 
 (deftest continous-acquiring-and-relesing
   (testing "it can continously acquire the lock and it's ok"
