@@ -1,10 +1,16 @@
 (ns lockjaw.protocol)
 
+
 (defprotocol Lockjaw
-  (acquire! [this]
+
+  (acquire!
+    [this]
     "Tries to get a lock for given ID")
-  (release! [this]
+
+  (release!
+    [this]
     "Rleases the lock"))
+
 
 (defmacro with-lock
   "Run the code if a lock is obtained"
@@ -13,6 +19,7 @@
      (do
        ~@body)
      :lockjaw.operation/no-lock))
+
 
 (defmacro with-lock!
   "Like *with-lock* but release it after use"

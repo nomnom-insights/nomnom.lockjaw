@@ -1,12 +1,22 @@
 (ns lockjaw.mock
-  (:require [lockjaw.protocol]))
+  (:require
+    [lockjaw.protocol]))
 
-(defrecord LockjawMock [result]
+
+(defrecord LockjawMock
+  [result]
+
   lockjaw.protocol/Lockjaw
-  (acquire! [this]
+
+  (acquire!
+    [_]
     result)
-  (release! [this]
+
+
+  (release!
+    [_]
     result))
+
 
 (defn create
   "Creates a mock, which by default always returns true on acquring the lock.
