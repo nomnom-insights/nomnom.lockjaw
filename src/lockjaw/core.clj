@@ -1,40 +1,49 @@
 (ns lockjaw.core
-  (:require [com.stuartsierra.component :as component]
-            [clojure.tools.logging :as log]
-            [lockjaw.util :as util]
-            [lockjaw.operation :as operation]
-            [lockjaw.protocol :as lockjaw]))
+  (:require
+    [clojure.tools.logging :as log]
+    [com.stuartsierra.component :as component]
+    [lockjaw.operation :as operation]
+    [lockjaw.protocol :as lockjaw]
+    [lockjaw.util :as util]))
 
-(defrecord Lockjaw [name lock-id db-conn]
+
+(defrecord Lockjaw
+  [name lock-id db-conn]
+
   component/Lifecycle
-  (start [this]
+
+  (start
+    [this]
     (let [lock-id (util/name-to-id name)]
       (log/infof "name=%s status=starting lock-id=%s" name lock-id)
       (assoc this :lock-id lock-id)))
-  (stop [this]
+
+
+  (stop
+    [this]
     (log/warnf "name=%s status=stopping lock-id=%s cleaning all locks!" name lock-id)
     (operation/release-all-locks! db-conn)
     (assoc this :lock-id nil))
 
   lockjaw/Lockjaw
-  (acquire! [this]
+  (acquire! [_]
     (operation/acquire-lock db-conn lock-id))
 
-  (acquire-by-name! [this lock-name]
+  (acquire-by-name! [_ lock-name]
     (let [lock-id (util/name-to-id lock-name)]
       (operation/acquire-lock db-conn lock-id)))
 
-  (release! [this]
+  (release! [_]
     (operation/release-lock db-conn lock-id))
 
-  (release-by-name! [this lock-name]
+  (release-by-name! [_ lock-name]
     (let [lock-id (util/name-to-id lock-name)]
       (operation/release-lock db-conn lock-id)))
 
-  (release-all! [this]
+  (release-all! [_]
     (operation/release-all-locks! db-conn)))
 
-
-(defn create [{:keys [name] :as args}]
+(defn create
+  [{:keys [name] :as args}]
   {:pre [(and (string? name) (not (.isEmpty ^String name)))]}
   (map->Lockjaw args))

@@ -12,10 +12,9 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [seancorfield/next.jdbc "1.2.659"]
                  [com.stuartsierra/component "1.0.0"]]
-  :plugins [[lein-cloverage "1.0.13" :exclusions [org.clojure/clojure]]]
   :profiles {:dev
              {:resource-paths ["dev-resources"]
-              :dependencies [[ch.qos.logback/logback-classic "1.2.6"]
+              :dependencies [[ch.qos.logback/logback-classic "1.2.7"]
                              ;; pulls in all the PG bits and a connection pool
                              ;; component
                              [nomnom/utility-belt.sql "1.0.1"]
