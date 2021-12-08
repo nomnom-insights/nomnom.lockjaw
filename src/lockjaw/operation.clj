@@ -1,7 +1,7 @@
 (ns lockjaw.operation
+  (:refer-clojure :exclude [key])
   (:require
     [next.jdbc :as jdbc]))
-
 
 (def acquire-lock-query "SELECT pg_try_advisory_lock(?)")
 (def release-lock-query "SELECT pg_advisory_unlock(?)")

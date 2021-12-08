@@ -25,18 +25,23 @@
     (operation/release-all-locks! db-conn)
     (assoc this :lock-id nil))
 
-
   lockjaw/Lockjaw
-
-  (acquire!
-    [_]
+  (acquire! [_]
     (operation/acquire-lock db-conn lock-id))
 
+  (acquire-by-name! [_ lock-name]
+    (let [lock-id (util/name-to-id lock-name)]
+      (operation/acquire-lock db-conn lock-id)))
 
-  (release!
-    [_]
-    (operation/release-lock db-conn lock-id)))
+  (release! [_]
+    (operation/release-lock db-conn lock-id))
 
+  (release-by-name! [_ lock-name]
+    (let [lock-id (util/name-to-id lock-name)]
+      (operation/release-lock db-conn lock-id)))
+
+  (release-all! [_]
+    (operation/release-all-locks! db-conn)))
 
 (defn create
   [{:keys [name] :as args}]
