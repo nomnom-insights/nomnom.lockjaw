@@ -4,18 +4,16 @@
 
 
 (defrecord LockjawMock
-  [result]
-
+  [always-acquire?]
   lockjaw.protocol/Lockjaw
-
-  (acquire!
-    [_]
-    result)
-
-
-  (release!
-    [_]
-    result))
+  (acquire! [_]
+    always-acquire?)
+  (release! [_]
+    always-acquire?)
+  (acquire-by-name! [_ _]
+    always-acquire?)
+  (release-by-name! [_ _]
+    always-acquire?))
 
 
 (defn create

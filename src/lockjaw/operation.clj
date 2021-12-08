@@ -3,9 +3,13 @@
   (:require
     [next.jdbc :as jdbc]))
 
+
 (def acquire-lock-query "SELECT pg_try_advisory_lock(?)")
+
 (def release-lock-query "SELECT pg_advisory_unlock(?)")
+
 (def release-all-locks-query "SELECT pg_advisory_unlock_all()")
+
 (def find-lock-for-id-query "SELECT objid, mode from pg_locks WHERE locktype = 'advisory' and  objid = ?")
 
 (def find-all-locks "SELECT * from pg_locks WHERE locktype = 'advisory'")
@@ -16,7 +20,7 @@
 ;; - we can use it to release all locks on the JVM shutdown
 ;; - we can inspect if a lock is actually held in given instance
 
-(def no-lock :no-lock)
+(def no-lock ::no-lock)
 
 
 (def registry

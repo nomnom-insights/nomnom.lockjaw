@@ -22,8 +22,9 @@ Ideally, you do not do much work while holding the lock. E.g. ensuring that your
 
 ## How to use it?
 
-The api is very simple:
+The usage boils down to:
 
+- creating a lock instance with a lock name `(def lock-component (lockjaw.core/create {:name "delete-account"}))`
 - `(lockjaw.protocol/acquire! lock-component)` - acquire the lock
 - `(lockjaw.protocol/release! lock-component)` - release the lock (usually not needed, but just in case)
 
@@ -40,8 +41,17 @@ It's important that you use the right connection type, especially when using too
 On Postgres level lock ids are just integers, and Lockjaw makes it easier to create them - we create an id out of a provided `name` configuration option.
 We use the CRC algorithm for ensuring that given string always produces same integer. Inspired by [Zencoder's Locker library](https://github.com/zencoder/locker/blob/master/lib/locker/advisory.rb#L97-L101).
 
-Note that we only support simple way of locking - by single a ID. Postgres also offers a way of locking with two (numerical) IDs, but it's not supported by Lockjaw (at the moment).
 
+### "Dynamic" locks
+
+While you can set the lock name while creating the component, you might need to dynamically create locks to ensure that only single user account is being processed at a given time. In that case you cannot create a component for each user ID, so you will need to use the following functions to acquire per-ID locks:
+
+
+- create your component (see above)
+- use `(lockjaw.protocol/acquire-by-name! lock (str "user:" (-> user :id)))` to hold a lock for given user id
+- use `(lockjaw.protocol/acquire-by-name! lock (str "user:" (-> user :id)))` to release it
+
+Same caveats apply as to 'default' locks: do not hold them for too long, and use them  as a coordination mechanism instead.
 
 ## Usage
 
@@ -57,7 +67,7 @@ Note that we only support simple way of locking - by single a ID. Postgres also 
    (component/using
     ;; unique id, per service, in 99% of the cases service name is ok
     (lockjaw.core/create {:name "some-service" })
-    [:db-conn]))) ;; assumes a hikari-cp pool is here
+    [:db-conn]))) ;; assumes a hikari-cp pool is here, can be any other JDBC Postgres driver though!
 
 ;; explicitly:
 (if (lock/acquire! a-lock)
@@ -74,6 +84,12 @@ Note that we only support simple way of locking - by single a ID. Postgres also 
   (do-some-work))
 
 ;; if the lock is NOT acquired, it will return right away with :lockjaw.operation/no-lock keyword
+
+
+;;; 'dynamic' locking
+
+(lock/with-named-lock! (:a-lock component) "delete-account:1"
+  (do-delete component {:account-id 1 }))
 ```
 
 
@@ -91,6 +107,9 @@ acquire the lock. It can also be configured to never acquire it:
   (.start never-lock)
   (lock/acquire! always-lock) ;; => true
   (lock/acquire! never-lock) ;; => false
+
+  ;; you can also pass the name lock name:
+  (lock/acquire-by-name! always-lock "who?") ;; => true
   (.stop always-lock)
   (.stop never-lock))
 ```

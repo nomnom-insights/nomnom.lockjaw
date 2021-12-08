@@ -41,6 +41,7 @@
     (is (lock/release-by-name! (:lock-1 @sys) "foo"))
     (is (false? (lock/release-by-name! (:lock-2 @sys) "foo")))))
 
+
 (deftest handy-macros
   (testing "nice macro ensures lock clean up"
     (let [fut (future
@@ -57,11 +58,11 @@
     (let [lock-name "a-nice-lock"
           fut (future
                 (lock/with-named-lock (:lock-1 @sys) lock-name
-                  (Thread/sleep 50)
-                  ::done))]
+                                      (Thread/sleep 50)
+                                      ::done))]
       (Thread/sleep 10)
       (is (= :lockjaw.operation/no-lock
              (lock/with-named-lock! (:lock-2 @sys) lock-name
-               ::invalid)))
+                                    ::invalid)))
       (is (= ::done
              @fut)))))
