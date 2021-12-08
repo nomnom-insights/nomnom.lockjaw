@@ -124,14 +124,10 @@ Just run:
 
 # Change log
 
-- 2021-11-09 - updates dependencies, includes `next.jdbc`, allows passing lock-name when asking for lock.
+- 2021-12-08 - 0.3.0 - "dynamic" locks, updated dependencies
+- 2021-11-09 - 0.2.1-SNAPSHOT, updates dependencies, includes `next.jdbc`, allows passing lock-name when asking for lock.
 - *unreleased* - 0.2.0-SNAPSHOT, switches to `next.jdbc`
 - 2019-10-24 - 0.1.2, Initial public offering
-
-# Roadmap
-
-- [ ] support 2 arg version of the lock API
-
 
 # Authors
 
