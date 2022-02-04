@@ -26,7 +26,9 @@
   (acquire-by-name! [_ lock-name]
     (let [lock-id (util/name-to-id lock-name)]
       (operation/acquire-lock db-conn lock-id)))
-  (acquired? [_ lock-name]
+  (acquired? [_]
+    (operation/lock-acquired? db-conn lock-id))
+  (acquired-by-name? [_ lock-name]
     (let [lock-id (util/name-to-id lock-name)]
       (operation/lock-acquired? db-conn lock-id)))
   (release! [_]
