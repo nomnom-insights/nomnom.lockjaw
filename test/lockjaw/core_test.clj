@@ -39,7 +39,11 @@
     (is (lock/acquire-by-name! (:lock-1 @sys) "foo"))
     (is (false? (lock/acquire-by-name! (:lock-2 @sys) "foo")))
     (is (lock/release-by-name! (:lock-1 @sys) "foo"))
-    (is (false? (lock/release-by-name! (:lock-2 @sys) "foo")))))
+    (is (false? (lock/release-by-name! (:lock-2 @sys) "foo"))))
+  (testing "checks if lock acquired by name"
+    (is (lock/acquire-by-name! (:lock-1 @sys) "alock"))
+    (is (lock/acquired? (:lock-1 @sys) "alock"))
+    (is (false? (lock/acquired? (:lock-1 @sys) "no lock")))))
 
 
 (deftest handy-macros

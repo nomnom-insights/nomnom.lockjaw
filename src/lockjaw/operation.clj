@@ -56,6 +56,9 @@
       (swap! registry (partial dec-key lock-id)))
     res))
 
+(defn lock-acquired?
+  [db-conn lock-id]
+  (boolean (jdbc/execute-one! db-conn [find-lock-for-id-query lock-id])))
 
 (defn release-all-locks!
   "Releases all locks hold by this connection, regardless of how many were acquired"
