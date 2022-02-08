@@ -10,12 +10,12 @@
                                    :password :env/clojars_password}}
 
   :dependencies [[org.clojure/clojure "1.10.3"]
-                 [com.github.seancorfield/next.jdbc "1.2.753"]
+                 [com.github.seancorfield/next.jdbc "1.2.761"]
                  [com.stuartsierra/component "1.0.0"]]
   :profiles {:dev
              {:resource-paths ["dev-resources"]
-              :dependencies [[ch.qos.logback/logback-classic "1.2.7"]
+              :dependencies [[ch.qos.logback/logback-classic "1.2.10"]
                              ;; pulls in all the PG bits and a connection pool
                              ;; component
                              [nomnom/utility-belt.sql "1.1.0"]
-                             [org.clojure/tools.logging "1.1.0"]]}})
+                             [org.clojure/tools.logging "1.2.4"]]}})
