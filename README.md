@@ -124,6 +124,7 @@ Just run:
 
 # Change log
 
+- 2022-02-08 - 0.3.1 - adds "acquired?" functions to check if a lock was already acquired. Updates dependencies (next.jdbc, logback-classic, tools.logging)
 - 2021-12-08 - 0.3.0 - "dynamic" locks, updated dependencies
 - 2021-11-09 - 0.2.1-SNAPSHOT, updates dependencies, includes `next.jdbc`, allows passing lock-name when asking for lock.
 - *unreleased* - 0.2.0-SNAPSHOT, switches to `next.jdbc`

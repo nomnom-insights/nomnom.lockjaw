@@ -6,6 +6,10 @@
     "Tries to get a lock for given component ID")
   (acquire-by-name! [this lock-name]
     "Converts passed name to ID and tries to aquire a lock for it")
+  (acquired? [this]
+    "Checks if lock was already acquired")
+  (acquired-by-name? [this lock-name]
+    "Converts passed name to ID and checks if lock was already acquired")
   (release! [this]
     "Rleases the component lock")
   (release-by-name! [this lock-name]
